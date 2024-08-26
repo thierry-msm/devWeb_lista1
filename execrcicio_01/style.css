@@ -1,0 +1,92 @@
+/* Estilo combinado: Float, Flex, Grid */
+
+/* Reset básico para garantir consistência */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Definindo altura mínima do body para garantir o rodapé no final */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Estilo da barra de navegação usando Flexbox */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+}
+
+.logo {
+  font-size: 24px;
+  color: #fff;
+  text-decoration: none;
+}
+
+#menu ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+}
+
+.menu-item {
+  margin-left: 20px;
+}
+
+.menu-link {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Estilo do jumbotron usando Grid */
+.jumbotron {
+  display: grid;
+  grid-template-columns: 1fr;
+  background-color: #f7f7f7;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* Estilo do conteúdo principal usando Float */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-grow: 1; /* Faz o conteúdo crescer e ocupar o espaço disponível */
+}
+
+.linha {
+  overflow: hidden;
+}
+
+.coluna {
+  float: left;
+  width: 32%;
+  margin-right: 2%;
+}
+
+.coluna:last-child {
+  margin-right: 0;
+}
+
+/* Estilo do rodapé usando Flexbox */
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+}
+
+main{
+  flex:1
+}
