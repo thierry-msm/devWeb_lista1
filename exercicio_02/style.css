@@ -1,0 +1,82 @@
+/* Reset básico para padronizar os estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fonte externa e variáveis de tema */
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+}
+
+:root {
+    --main-bg-color: #ffffff;
+    --main-text-color: #000000;
+}
+
+body.dark-theme {
+    --main-bg-color: #333;
+    --main-text-color: #f4f4f4;
+}
+
+/* Estilos gerais */
+body {
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#task-list {
+    list-style-type: none;
+    margin-bottom: 20px;
+}
+
+#task-list li {
+    display: flex;
+    justify-content: space-between;
+    background: #f4f4f4;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+#task-list li.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+/* Botão de tema */
+#theme-toggle {
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#theme-toggle:hover {
+    background-color: #0056b3;
+}
