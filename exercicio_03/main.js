@@ -15,39 +15,58 @@ document.getElementById('imageForm').addEventListener('submit', async function(e
         return;
     }
 
-    // Buscar as imagens da API
-    for (let i = 0; i < quantity; i++) {
-        // Adicionar um parâmetro aleatório para garantir que cada imagem seja única
-        const imgSrc = `https://picsum.photos/${width}/${height}.webp?random=${Math.random()}`;
-        const fullHdSrc = `https://picsum.photos/1920/1080.webp?random=${Math.random()}`;
+    // Definir uma página aleatória para variar as imagens
+    const randomPage = Math.floor(Math.random() * 100) + 1;
 
-        const imgContainer = document.createElement('div');
-        imgContainer.classList.add('image-container');
+    try {
+        const response = await fetch(`https://picsum.photos/v2/list?page=${randomPage}&limit=${quantity}`);
+        const images = await response.json();
 
-        const img = document.createElement('img');
-        img.src = imgSrc;
-        img.alt = `Imagem aleatória ${i + 1}`;
+        images.forEach((image, index) => {
+            const imageId = image.id;
+            const imgSrc = `https://picsum.photos/id/${imageId}/${width}/${height}.webp`;
+            const fullHdSrc = `https://picsum.photos/id/${imageId}/1920/1080.webp`;
 
-        const downloadFullHdButton = document.createElement('button');
-        downloadFullHdButton.textContent = 'Baixar em Full HD';
-        downloadFullHdButton.onclick = () => downloadImage(fullHdSrc);
+            const imgContainer = document.createElement('div');
+            imgContainer.classList.add('image-container');
 
-        const shareButton = document.createElement('button');
-        shareButton.textContent = 'Compartilhar';
-        shareButton.onclick = () => shareImage(imgSrc);
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.alt = `Imagem aleatória ${index + 1}`;
 
-        imgContainer.appendChild(img);
-        imgContainer.appendChild(downloadFullHdButton);  // Botão de download em Full HD
-        imgContainer.appendChild(shareButton);  // Botão de compartilhar
+            const threeDotsButton = document.createElement('button');
+            threeDotsButton.classList.add('three-dots');
+            threeDotsButton.textContent = '...';
 
-        imageGrid.appendChild(imgContainer);
+            const optionsDiv = document.createElement('div');
+            optionsDiv.classList.add('options');
+
+            const downloadFullHdButton = document.createElement('button');
+            downloadFullHdButton.textContent = 'Baixar em Full HD';
+            downloadFullHdButton.onclick = () => downloadImage(fullHdSrc, `image-${imageId}.webp`);
+
+            const shareButton = document.createElement('button');
+            shareButton.textContent = 'Compartilhar';
+            shareButton.onclick = () => shareImage(imgSrc);
+
+            optionsDiv.appendChild(downloadFullHdButton);
+            optionsDiv.appendChild(shareButton);
+
+            imgContainer.appendChild(img);
+            imgContainer.appendChild(threeDotsButton);
+            imgContainer.appendChild(optionsDiv);
+
+            imageGrid.appendChild(imgContainer);
+        });
+    } catch (error) {
+        console.error('Erro ao buscar imagens:', error);
     }
 });
 
-function downloadImage(src) {
+function downloadImage(src, fileName) {
     const link = document.createElement('a');
-    link.href = `${src}&dl=1`;  // Forçar o download
-    link.download = 'image.webp';
+    link.href = src;  // Apenas a URL da imagem sem parâmetros extras
+    link.download = fileName;  // Definir o nome correto do arquivo com extensão
     link.click();
 }
 
