@@ -19,6 +19,7 @@ document.getElementById('imageForm').addEventListener('submit', async function(e
     for (let i = 0; i < quantity; i++) {
         // Adicionar um parâmetro aleatório para garantir que cada imagem seja única
         const imgSrc = `https://picsum.photos/${width}/${height}.webp?random=${Math.random()}`;
+        const fullHdSrc = `https://picsum.photos/1920/1080.webp?random=${Math.random()}`;
 
         const imgContainer = document.createElement('div');
         imgContainer.classList.add('image-container');
@@ -27,22 +28,17 @@ document.getElementById('imageForm').addEventListener('submit', async function(e
         img.src = imgSrc;
         img.alt = `Imagem aleatória ${i + 1}`;
 
-        const downloadButton = document.createElement('button');
-        downloadButton.textContent = 'Baixar';
-        downloadButton.onclick = () => downloadImage(imgSrc);
-
-        const copyButton = document.createElement('button');
-        copyButton.textContent = 'Copiar Link';
-        copyButton.onclick = () => copyLink(imgSrc);
+        const downloadFullHdButton = document.createElement('button');
+        downloadFullHdButton.textContent = 'Baixar em Full HD';
+        downloadFullHdButton.onclick = () => downloadImage(fullHdSrc);
 
         const shareButton = document.createElement('button');
         shareButton.textContent = 'Compartilhar';
         shareButton.onclick = () => shareImage(imgSrc);
 
         imgContainer.appendChild(img);
-        imgContainer.appendChild(downloadButton);
-        imgContainer.appendChild(copyButton);
-        imgContainer.appendChild(shareButton);
+        imgContainer.appendChild(downloadFullHdButton);  // Botão de download em Full HD
+        imgContainer.appendChild(shareButton);  // Botão de compartilhar
 
         imageGrid.appendChild(imgContainer);
     }
@@ -55,15 +51,8 @@ function downloadImage(src) {
     link.click();
 }
 
-function copyLink(src) {
-    navigator.clipboard.writeText(src).then(() => {
-        alert('Link copiado!');
-    });
-}
-
 function shareImage(src) {
     const text = `Confira esta imagem incrível: ${src}`;
-    const url = encodeURIComponent(src);
-    const whatsappUrl = `https://wa.me/?text=${text}`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
     window.open(whatsappUrl, '_blank');
 }
