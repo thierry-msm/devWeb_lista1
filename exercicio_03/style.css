@@ -12,6 +12,12 @@ body {
     line-height: 1.6;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
 header {
     text-align: center;
     padding: 20px;
@@ -77,7 +83,7 @@ button:hover {
     display: block;
     width: 100%; /* Ocupa toda a largura */
     margin-top: 10px;
-    background-color: #007BFF; /* Cor azul com bom contraste */
+    background-color: #4f5357; /* Cor azul com bom contraste */
     color: #fff;
     border: none;
     padding: 8px;
@@ -87,7 +93,7 @@ button:hover {
 }
 
 .image-container button:hover {
-    background-color: #0056b3; /* Azul mais escuro para hover */
+    background-color: #779cc3; /* Azul mais escuro para hover */
 }
 
 /* Estilos de acessibilidade */
@@ -95,3 +101,17 @@ input:focus, select:focus, button:focus {
     outline: 2px solid #00f;
     outline-offset: 4px;
 }
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+  }
+
+  main{
+    flex:1
+  }
