@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Gerador de Imagens Aleatórias</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <h1>Gerador de Imagens Aleatórias</h1>
+    </header>
+    
+    <main>
+        <form id="imageForm">
+            <label for="width">Largura (em pixels):</label>
+            <input type="number" id="width" name="width" value="300" min="50" max="1920" required>
+
+            <label for="height">Altura (em pixels):</label>
+            <input type="number" id="height" name="height" value="300" min="50" max="1080" required>
+
+            <label for="quantity">Quantidade de Imagens:</label>
+            <select id="quantity" name="quantity" required>
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+            </select>
+
+            <button type="submit">Gerar Imagens</button>
+        </form>
+
+        <section id="imageGrid" class="image-grid"></section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Gerador de Imagens Aleatórias</p>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
