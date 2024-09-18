@@ -12,13 +12,19 @@ body {
 }
 
 :root {
-    --main-bg-color: #ffffff;
-    --main-text-color: #000000;
+    --main-bg-color: #f7f7f7; /* Tons claros de cinza */
+    --main-text-color: #333;
+    --task-bg-color: #e0e0e0;
+    --button-color: #5c5c5c;
+    --button-hover-color: #4a4a4a;
 }
 
 body.dark-theme {
-    --main-bg-color: #333;
-    --main-text-color: #f4f4f4;
+    --main-bg-color: #2e2e2e;
+    --main-text-color: #f7f7f7;
+    --task-bg-color: #555;
+    --button-color: #888;
+    --button-hover-color: #777;
 }
 
 /* Estilos gerais */
@@ -29,36 +35,66 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden;
 }
 
 .container {
     max-width: 600px;
     width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Manter o header fixo no topo */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--main-bg-color);
     padding: 20px;
+    z-index: 1000;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 h1 {
-    text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    font-weight: 400;
 }
 
-input, button {
-    width: 100%;
+input#filter {
+    width: calc(100% - 40px);
+    margin: 0 auto;
+    display: block;
     padding: 10px;
-    margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
+    background-color: #fff;
 }
 
+/* Espaço reservado abaixo do header fixo */
+main {
+    flex-grow: 3;
+    margin-top: 140px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Lista de tarefas com rolagem */
 #task-list {
     list-style-type: none;
-    margin-bottom: 20px;
+    padding: 10;
+    overflow-y: auto;
+    max-height: calc(100vh - 335px); /* Limitar a altura para rolagem */
 }
 
 #task-list li {
     display: flex;
     justify-content: space-between;
-    background: #f4f4f4;
+    background-color: var(--task-bg-color);
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px;
@@ -69,14 +105,71 @@ input, button {
     opacity: 0.6;
 }
 
-/* Botão de tema */
-#theme-toggle {
-    background-color: #007BFF;
+
+.add-task-container {
+    padding: 20px;
+    background-color: var(--main-bg-color);
+    border-top: 1px solid #ccc;
+    position: fixed;
+    bottom: 30px; /* Posição fixa acima do footer */
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+input#new-task {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+
+#add-task-btn {
+    width: 90%;
+    padding: 10px;
+    background-color: var(--button-color);
     color: #fff;
+    border: none;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-align: center;
+}
+
+#add-task-btn:hover {
+    background-color: var(--button-hover-color);
+}
+
+/* Footer fixo no final */
+footer {
+    padding: 5px;
+    text-align: center;
+    background-color: var(--main-bg-color);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.05);
+}
+
+#theme-toggle {
+    width:calc(100% - 30%);
+    padding: 10px;
+    background-color: var(--button-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s;
 }
 
 #theme-toggle:hover {
-    background-color: #0056b3;
+    background-color: var(--button-hover-color);
 }
