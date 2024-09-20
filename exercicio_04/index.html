@@ -6,7 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Sistema de Fotos com Localização</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../normalize.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+
+
 </head>
 <body>
     <h1>Sistema de Fotos com Localização</h1>
@@ -37,6 +43,8 @@
     
 
     <!-- Tabela de fotos salvas -->
+    <div id="map-container" style="display:none; position:absolute; width: 300px; height: 200px;"></div>
+
     <section id="photo-list-section">
         <table id="photo-table">
             <thead>
@@ -52,9 +60,8 @@
             <tbody>
                 <!-- Registros de fotos serão adicionados dinamicamente -->
             </tbody>
-        </table>
+        </table>        
     </section>
-
     <script src="main.js"></script>
 </body>
 </html>

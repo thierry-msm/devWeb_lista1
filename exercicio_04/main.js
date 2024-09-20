@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const manualLocationInput = document.getElementById('manual-location-input');
     const savePhotoBtn = document.getElementById('save-photo-btn');
     const photoTableBody = document.querySelector('#photo-table tbody');
+    const mapContainer = document.getElementById('map-container');
+    let map;  // Variável global para o mapa
 
     let photoData = JSON.parse(localStorage.getItem('photos')) || [];
     let currentLocation = null;
@@ -28,10 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const context = canvas.getContext('2d');
         const img = new Image();
         img.onload = () => {
-            // Redimensiona o canvas para o mesmo tamanho do vídeo (câmera)
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
-            // Ajusta a foto carregada para o tamanho do canvas (câmera)
             context.drawImage(img, 0, 0, canvas.width, canvas.height);
         };
         img.src = photoURL;
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const context = canvas.getContext('2d');
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             currentPhotoURL = canvas.toDataURL('image/png');
-            displayPhoto(currentPhotoURL); // Exibir a foto capturada
+            displayPhoto(currentPhotoURL);
             alert('Foto capturada com sucesso!');
         } else {
             alert('Câmera não está disponível.');
@@ -65,19 +65,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const img = new Image();
                 img.src = e.target.result;
                 img.onload = () => {
-                    canvas.width = video.videoWidth;  // Usar as dimensões da câmera
+                    canvas.width = video.videoWidth;
                     canvas.height = video.videoHeight;
                     const context = canvas.getContext('2d');
                     context.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    currentPhotoURL = canvas.toDataURL('image/png'); // Converter para base64
-                    displayPhoto(currentPhotoURL); // Exibir a foto carregada e ajustá-la ao tamanho da câmera
+                    currentPhotoURL = canvas.toDataURL('image/png');
+                    displayPhoto(currentPhotoURL);
                     alert('Foto carregada com sucesso!');
                 };
             };
-            reader.readAsDataURL(file); // Ler o arquivo e convertê-lo para URL de dados base64
+            reader.readAsDataURL(file);
         }
     });
-
 
     // Marcar localização atual
     locationBtn.addEventListener('click', () => {
@@ -142,7 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const location = `${currentLocation.lat}, ${currentLocation.lon}`;
 
         if (editId !== null) {
-            // Edição de foto existente
             const photoIndex = photoData.findIndex(p => p.id === editId);
             if (photoIndex !== -1) {
                 photoData[photoIndex] = { ...photoData[photoIndex], title, description, location, photoURL: currentPhotoURL };
@@ -150,7 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Foto editada com sucesso!');
             }
         } else {
-            // Nova foto
             const id = photoData.length > 0 ? photoData[photoData.length - 1].id + 1 : 1;
             const newPhoto = { id, title, description, location, date, photoURL: currentPhotoURL };
             photoData.push(newPhoto);
@@ -160,13 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('photos', JSON.stringify(photoData));
         displayPhotos();
         clearForm();
-
-        // Voltar para a câmera após salvar
         canvas.style.display = 'none';
         video.style.display = 'block';
     });
 
-    // Exibir fotos na tabela
     function displayPhotos() {
         photoTableBody.innerHTML = '';
         photoData.forEach(photo => {
@@ -175,7 +169,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${photo.id}</td>
                 <td>${photo.title}</td>
                 <td>${photo.description}</td>
-                <td>${photo.location}</td>
+                <td>
+                    <button class="map-btn" data-lat="${photo.location.split(',')[0]}" data-lon="${photo.location.split(',')[1]}" title="Ver Mapa">🗺️</button>
+                </td>
                 <td>${photo.date}</td>
                 <td>
                     <button class="view-btn" data-id="${photo.id}">Visualizar</button>
@@ -186,7 +182,23 @@ document.addEventListener('DOMContentLoaded', () => {
             photoTableBody.appendChild(row);
         });
 
-        // Adicionar eventos aos botões
+        // Adicionar eventos de clique sobre os botões de mapa
+        document.querySelectorAll('.map-btn').forEach(btn => {
+            btn.addEventListener('click', function(event) {
+                const lat = parseFloat(this.getAttribute('data-lat').trim());
+                const lon = parseFloat(this.getAttribute('data-lon').trim());
+
+                if (mapContainer.style.display === 'block') {
+                    mapContainer.style.display = 'none';  // Esconde o mapa se já estiver visível
+                } else {
+                    if (!isNaN(lat) && !isNaN(lon)) {
+                        showMap(lat, lon, event);  // Exibe o mapa se não estiver visível
+                    }
+                }
+            });
+        });
+
+        // Adicionar eventos aos botões de visualizar, editar e excluir
         document.querySelectorAll('.view-btn').forEach(btn => {
             btn.addEventListener('click', viewPhoto);
         });
@@ -200,7 +212,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Função para visualizar a foto
+    // Função para exibir o mapa quando o mouse passa sobre o botão de localização
+    function showMap(lat, lon, event) {
+        if (map) {
+            map.remove();
+        }
+        map = L.map(mapContainer).setView([lat, lon], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.marker([lat, lon]).addTo(map);
+
+        mapContainer.style.display = 'block';
+        mapContainer.style.top = `${event.pageY}px`;
+        mapContainer.style.left = `${event.pageX + 15}px`;
+    }
+
     function viewPhoto(e) {
         const id = Number(e.target.getAttribute('data-id'));
         const photo = photoData.find(p => p.id === id);
@@ -210,7 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Função para editar o registro
     function editPhoto(e) {
         const id = Number(e.target.getAttribute('data-id'));
         const photo = photoData.find(p => p.id === id);
@@ -224,11 +252,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('location-info').textContent = `Localização: ${currentLocation.lat}, ${currentLocation.lon}`;
             editId = id;
             currentPhotoURL = photo.photoURL;
-            displayPhoto(currentPhotoURL); // Exibir a foto para edição
+            displayPhoto(currentPhotoURL);
         }
     }
 
-    // Função para excluir a foto
     function deletePhoto(e) {
         const id = Number(e.target.getAttribute('data-id'));
         const index = photoData.findIndex(p => p.id === id);
@@ -240,7 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Limpar formulário
     function clearForm() {
         document.getElementById('photo-title').value = '';
         document.getElementById('photo-description').value = '';
@@ -249,6 +275,5 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPhotoURL = null;
     }
 
-    // Exibir fotos ao carregar a página
     displayPhotos();
 });
