@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sistema de Fotos com Localização</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <h1>Sistema de Fotos com Localização</h1>
+
+    <!-- Contêiner principal com layout flex -->
+    <section id="main-container">
+        <!-- Seção da câmera -->
+        <div id="camera-section">
+            <video id="video" autoplay></video>
+            <canvas id="canvas" style="display:none;"></canvas>            
+            <button id="capture-btn">Tirar Foto</button>
+            <input type="file" id="upload-photo" style="display: none;" accept="image/*">
+            <button id="upload-btn">Upload de Foto</button>            
+        </div>
+        <!-- Seção de detalhes da foto -->
+        <div id="details-section">
+            <input type="text" id="photo-title" placeholder="Título da foto (obrigatório)">
+            <textarea id="photo-description" placeholder="Descrição da foto (opcional)"></textarea>
+            <p id="location-info">Localização: Não definida</p>
+            <button id="get-location-btn">Marcar Localização Atual</button>                        
+            <button id="manual-location-btn">Inserir Localização Manualmente</button>
+            <input type="text" id="manual-location-input" placeholder="Insira coordenadas: lat, lon">
+            
+            <button id="save-photo-btn">Salvar Foto</button>
+        </div>
+    </section>
+
+    
+
+    <!-- Tabela de fotos salvas -->
+    <section id="photo-list-section">
+        <table id="photo-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Localização</th>
+                    <th>Data</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Registros de fotos serão adicionados dinamicamente -->
+            </tbody>
+        </table>
+    </section>
+
+    <script src="main.js"></script>
+</body>
+</html>

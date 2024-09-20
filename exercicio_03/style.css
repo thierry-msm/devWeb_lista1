@@ -75,6 +75,21 @@ input:focus, select:focus, button:focus {
     outline-offset: 4px;
 }
 
+/* Contêiner para a rolagem horizontal */
+.image-gallery {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    gap: 10px;
+    scroll-behavior: smooth; /* Rolar suavemente */
+}
+
+/* Ocultar as barras de rolagem em alguns navegadores */
+.image-gallery::-webkit-scrollbar {
+    display: none;
+}
+
+
 .image-container {
     position: relative;
     display: inline-block;
